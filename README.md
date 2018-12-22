@@ -1,16 +1,23 @@
 # sequence-diagram-gen
-* Um módulo é o conteúdo de um arquivo de texto de código com namespaces, classes, propriedades e métodos
-* Um módulo pode chamar outros módulos, se isso ocorrer, obrigatóriamente o módulo chamado deverá ser uma propriedade do módulo pai
-* Um classe com comportamento é um módulo
-* Um ponto de entrada é um módulo
-* Um projeto pode possuir vários pontos de entrada
-* Em uma API um ponto de entrada será uma Action de uma Controller
-* Em um programa um ponto de entrada será a Main
+## Definições
+* Um (arquivo) contém código em uma (linguagem) qualquer.
+* Um (módulo) é o conteúdo principal de um (arquivo) que contém: (métodos) e (módulos).
+* Um (método) pode possuir (asserções) que definem (retorno) ou (chamada).
+* Um (módulo) pode (chamar) outros (módulos).
+* Um (módulo) obrigatóriamente deve possuir (métodos).
+* Um (módulo) pode possuir (pontos de entrada).
+* Um (projeto) pode possuir vários (pontos de entrada).
+* Quando um (projeto) for uma (API), os (pontos de entrada) serão as (actions) de uma (controller).
+* Uma (action) é um (método) de uma (controller).
+* Uma (controller) é um (módulo) localizado no pacote web e/ou com o nome do (arquivo) possuindo o sufixo controller.
+* Quando um (projeto) for um (programa), o (ponto de entrada) será a (main).
+* A (main) é um (método).
 * Uma (árvore de utilização) irá possuir um (ponto de entrada) e irá
-armazenar todas as chamadas que o (ponto de entrada) faz para outros (módulos) e as chamdas que esses (módulos) fazem para outros.
-* Uma visualização será um meio gráfico de mostrar uma (árvore de utilização)
+armazenar todas as (chamadas) que o (ponto de entrada) faz para outros (módulos) e as (chamadas) que esses (módulos) fazem para outros.
+* Uma (visualização) será um meio gráfico de mostrar uma (árvore de utilização)
 
-* O sequence-diagram-gen irá analisar todos os arquivos de um projeto para encontrar (módulos) para serem análisados.
-* Encontrando todos os (módulos), será buscado todos os (pontos de entrada).
-* A partir dos (pontos de entrada), será iniciado uma busca que irá construir as (árvores de utilização)
-* A partir das (árvores de utilização), será construído uma (visualização) da mesma.
+## Core-domain
+* O sequence-diagram-gen irá analisar todos os (arquivos) de um (projeto) para encontrar (módulos) para serem análisados.
+* Encontrando todos os (módulos), será filtrado aqueles (módulos) que possuem (pontos de entrada).
+* A partir dos (pontos de entrada), será buscado todas as (chamadas) para outros (módulos) e (retornos), de forma recursiva. O resultado dessa busca será uma (árvore de utilização).
+* A partir das (árvores de utilização), serão construídos (visualizações)
