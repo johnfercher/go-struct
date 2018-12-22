@@ -1,12 +1,12 @@
 import os
 from glob import glob
 
-from src.domain.interfaces.Ifile_finder import IFileFinder
+from src.domain.interfaces.Ifile_loader import IFileLoader
 from src.domain.models.file import File
 
-class FileFinder(IFileFinder):
+class FileLoader(IFileLoader):
 
-    def find_all_files(self, path, extension):
+    def load_all_files(self, path, extension):
         print("Searching for " + extension + " files in " + path + " folder.")
 
         filenames = self.__get_filenames(path, extension)
@@ -17,12 +17,23 @@ class FileFinder(IFileFinder):
         else:
             print("Found " + str(len(filenames)) + " " + extension + " files in " + path + " folder.")
 
+        print("Loading files content.")
+
         files = self.__build_files(filenames)
+
+        print("Files loaded.")
+
+        return files
 
     def __get_filenames(self, path, extension):
         return [y for x in os.walk(path) for y in glob(os.path.join(x[0], extension))]
 
     def __build_files(self, filenames):
         files = list()
+
+        for filename in filenames:
+            with open(filename, 'r') as opened_file:
+                file = File(filename, opened_file.read().replace('\n', ''))
+                files.append(file)
 
         return files
