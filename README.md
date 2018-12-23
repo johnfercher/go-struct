@@ -18,7 +18,7 @@ armazenar todas as (chamadas) que o (ponto de entrada) faz para outros (módulos
 
 ## Core-domain
 * O sequence-diagram-gen irá carregar todos (arquivos) de uma determinada (linguagem) de um (projeto).
-* Após carregar todos os (arquivos) os (módulos) serão filtrados.
+* Após carregar todos os (arquivos), os (módulos) serão filtrados.
 * Encontrando todos os (módulos), será filtrado aqueles (módulos) que possuem (pontos de entrada).
 * A partir dos (pontos de entrada), será buscado todas as (chamadas) para outros (módulos) e (retornos), de forma recursiva. O resultado dessa busca será uma (árvore de utilização).
 * A partir das (árvores de utilização), serão construídos (visualizações)
