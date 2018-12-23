@@ -9,9 +9,9 @@ class CsModuleInterpreter(IModuleInterpreter):
     def get_module(self, file):
         print("Interpreting file " + file.name + " to a module.")
 
-        class_name = self.syntax_interpreter.get_classes(file.content)
+        class_definition = self.syntax_interpreter.get_class_definition(file.content)
 
-        if (class_name == None):
+        if (class_definition == None):
             print("File " + file.name + " is not a module.")
             return None
 
@@ -19,6 +19,16 @@ class CsModuleInterpreter(IModuleInterpreter):
         properties = self.syntax_interpreter.get_properties(file.content)
         has_entry_points = self.syntax_interpreter.has_entry_points(file.content)
 
-        print("Builded module " + str(class_name) + ".")
+        print("Builded module " + str(class_definition.name) + ".")
 
-        return Module(file.name, class_name, methods, properties, has_entry_points)
+        module = Module(file.name, class_definition, properties, methods, has_entry_points)
+        print("Module File: " + module.file_name)
+        print("Module ClassName: " + str(module.class_definition.name))
+        print("Module Interface: " + str(module.class_definition.interface))
+        print("Module Has Entry Points: " + str(module.has_entry_points))
+        print("Module Properties")
+        print(module.properties)
+        print("Module Methods")
+        print(module.methods)
+
+        return module

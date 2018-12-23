@@ -1,6 +1,6 @@
 class ISyntaxInterpreter(object):
 
-    def get_classes(self, string_content):
+    def get_class_definition(self, string_content):
         raise NotImplementedError()
 
     def has_entry_points(self, string_content):
