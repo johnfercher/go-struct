@@ -1,11 +1,11 @@
-from src.infrastructure.file_loader import FileLoader
-from src.csharp.module_interpreter import ModuleInterpreter
+from src.infrastructure.services.file_loader import FileLoader
+from src.csharp.cs_module_interpreter import CsModuleInterpreter
 
 import sys
 
 def main():
     file_loader = FileLoader()
-    module_interpreter = ModuleInterpreter()
+    cs_module_interpreter = CsModuleInterpreter()
 
     if(len(sys.argv) != 3):
         print("Invalid arguments, should be: project_folder extension")
@@ -14,7 +14,9 @@ def main():
     print(str(sys.argv))
 
     files = file_loader.load_all_files(str(sys.argv[1]), "*." + str(sys.argv[2]))
-    modules = module_interpreter.get_modules(files)
+
+    for file in files:
+        module = cs_module_interpreter.get_module(file)
 
 
 if __name__ == "__main__":

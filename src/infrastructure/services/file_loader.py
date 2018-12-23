@@ -33,7 +33,7 @@ class FileLoader(IFileLoader):
 
         for filename in filenames:
             with open(filename, 'r') as opened_file:
-                file = File(filename, opened_file.read().replace('\n', ''))
+                file = File(filename, opened_file.read())
                 files.append(file)
 
         return files

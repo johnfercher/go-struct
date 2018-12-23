@@ -17,7 +17,12 @@ namespace AnyApplication.Controllers
             return new List<User>();
         }
 
-        public async Task<bool> AddUser(UserDto user)
+        public bool AddUser(UserDto user)
+        {
+            return true;
+        }
+
+        public async Task<bool> AddUserAsync(UserDto user)
         {
             return await Task.FromResult(true);
         }

@@ -8,6 +8,7 @@ namespace AnyApplication.Domain.Interfaces.Repositories
     public interface IDocumentDbRepository<T> where T : ProviderResponse
     {
         List<User> GetUsers();
-        Task<bool> AddUser(UserDto user);
+        bool AddUser(UserDto user);
+        Task<bool> AddUserAsync(UserDto user);
     }
 }

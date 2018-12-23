@@ -1,4 +1,4 @@
 class IModuleInterpreter(object):
 
-    def get_modules(self, files):
+    def get_module(self, file):
         raise NotImplementedError()
