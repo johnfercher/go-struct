@@ -1,7 +1,8 @@
 # sequence-diagram-gen
 ## Definições
 * Um (arquivo) contém código em uma (linguagem) qualquer.
-* Um (módulo) é o conteúdo principal de um (arquivo) que contém: (métodos) e (módulos).
+* Um (módulo) é o conteúdo principal de um (arquivo) que contém: (definição de classe), (métodos) e (propriedades). 
+* Uma (definição de classe) é o conjunto do nome da classe que pode possuir uma interface.
 * Um (método) pode possuir (asserções) que definem (retorno) ou (chamada).
 * Um (módulo) pode (chamar) outros (módulos).
 * Um (módulo) obrigatóriamente deve possuir (métodos).

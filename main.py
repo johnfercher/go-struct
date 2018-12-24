@@ -11,8 +11,6 @@ def main():
         print("Invalid arguments, should be: project_folder extension")
         return
 
-    print(str(sys.argv))
-
     files = file_loader.load_all_files(str(sys.argv[1]), "*." + str(sys.argv[2]))
 
     for file in files:

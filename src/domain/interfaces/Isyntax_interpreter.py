@@ -6,7 +6,7 @@ class ISyntaxInterpreter(object):
     def has_entry_points(self, string_content):
         raise NotImplementedError()
 
-    def get_methods(self, string_content):
+    def get_methods_definitions(self, string_content):
         raise NotImplementedError()
 
     def get_properties(self, string_content):

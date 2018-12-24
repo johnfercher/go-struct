@@ -1,23 +1,31 @@
 from src.domain.interfaces.Isyntax_interpreter import ISyntaxInterpreter
 from src.domain.models.class_definition import ClassDefinition
+from src.domain.models.method_definition import MethodDefinition
 
 import re
 
 class CsSyntaxInterpreter(ISyntaxInterpreter):
 
+    # TODO: Refactor
     def get_class_definition(self, string_content):
         class_declaration = None
 
         class_declaration = self.__get_class_with_inheritance(string_content)
 
         if(class_declaration != None):
-            class_name_and_interface = class_declaration.split(" : ")
+            class_without_class_keyword = self.__remove_class(class_declaration)
+            class_name_and_interface = class_without_class_keyword.split(" : ")
             return ClassDefinition(class_name_and_interface[0], class_name_and_interface[1])
 
         if(class_declaration == None):
             class_declaration = self.__get_class_without_inheritance(string_content)
 
-        return ClassDefinition(class_declaration, None)
+        if(class_declaration == None):
+            return None
+
+        class_without_class_keyword = self.__remove_class(class_declaration)
+
+        return ClassDefinition(class_without_class_keyword, None)
 
     def has_entry_points(self, string_content):
         # Interpret class ClassName : Controller
@@ -28,7 +36,7 @@ class CsSyntaxInterpreter(ISyntaxInterpreter):
 
         return False
 
-    def get_methods(self, string_content):
+    def get_methods_definitions(self, string_content):
         raw_declarations = list()
 
         raw_declarations.extend(self.__get_sync_methods(string_content))
@@ -38,8 +46,12 @@ class CsSyntaxInterpreter(ISyntaxInterpreter):
         methods_without_async = list(map(self.__remove_async, methods_without_access_level))
         methods_without_return = list(map(self.__remove_return, methods_without_async))
         methods = list(map(self.__remove_parenthesis, methods_without_return))
+        methods_definitions =  [MethodDefinition(method, None) for method in methods]
 
-        return methods
+        return methods_definitions
+
+    def get_module_calls(self, string_content):
+        return None
 
     def get_properties(self, string_content):
         raw_declarations = list()
@@ -124,6 +136,10 @@ class CsSyntaxInterpreter(ISyntaxInterpreter):
 
     def __remove_readonly(self, value):
         value = value.replace('readonly ', '')
+        return value
+
+    def __remove_class(self, value):
+        value = value.replace('class ', '')
         return value
 
     def __remove_parenthesis(self, value):
