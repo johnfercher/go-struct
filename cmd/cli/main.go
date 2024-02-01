@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/johnfercher/go-pkg-struct/pkg/classifier"
 	"github.com/johnfercher/go-pkg-struct/pkg/discover"
 	"github.com/johnfercher/go-pkg-struct/pkg/loader"
 	"github.com/johnfercher/go-pkg-struct/pkg/printer"
@@ -12,7 +13,8 @@ import (
 func main() {
 	packagePath := "docs/api"
 	l := loader.New()
-	d := discover.New(l)
+	c := classifier.New()
+	d := discover.New(l, c)
 
 	workdir, err := os.Getwd()
 	if err != nil {
@@ -22,6 +24,10 @@ func main() {
 	path := workdir + "/" + packagePath
 	fmt.Println(path)
 
-	node := d.FindDirs(path)
+	node, err := d.FindDirs(path)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	printer.Print(node)
 }

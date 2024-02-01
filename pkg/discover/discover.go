@@ -1,6 +1,8 @@
 package discover
 
 import (
+	"github.com/johnfercher/go-pkg-struct/pkg/classifier"
+	"github.com/johnfercher/go-pkg-struct/pkg/consts/filesystem"
 	"github.com/johnfercher/go-pkg-struct/pkg/loader"
 	"github.com/johnfercher/go-tree/node"
 	"log"
@@ -10,23 +12,25 @@ import (
 const goMod = "/go.mod"
 
 type Discover interface {
-	FindDirs(path string) *node.Node[FileDir]
+	FindDirs(path string) (*node.Node[filesystem.Entity], error)
 }
 
 type discover struct {
-	loader loader.Loader
+	loader     loader.Loader
+	classifier classifier.Classifier
 }
 
-func New(loader loader.Loader) Discover {
+func New(loader loader.Loader, classifier classifier.Classifier) Discover {
 	return &discover{
-		loader: loader,
+		loader:     loader,
+		classifier: classifier,
 	}
 }
 
-func (d *discover) FindDirs(path string) *node.Node[FileDir] {
-	root := node.New(FileDir{
+func (d *discover) FindDirs(path string) (*node.Node[filesystem.Entity], error) {
+	root := node.New(filesystem.Entity{
 		Path: "root",
-		Type: Dir,
+		Type: filesystem.Dir,
 	})
 
 	entries, err := os.ReadDir(path)
@@ -35,29 +39,38 @@ func (d *discover) FindDirs(path string) *node.Node[FileDir] {
 	}
 
 	for _, e := range entries {
-		innerFileDirType := File
+		innerFileDirType := filesystem.File
 		if e.IsDir() {
-			innerFileDirType = Dir
+			innerFileDirType = filesystem.Dir
 		}
 
-		if innerFileDirType == Dir {
-			inner := d.findDir(path+"/"+e.Name(), innerFileDirType)
+		if innerFileDirType == filesystem.Dir {
+			inner, err := d.findDir(path+"/"+e.Name(), innerFileDirType)
+			if err != nil {
+				return nil, err
+			}
 			root.AddNext(inner)
 		} else {
-			node := node.New(FileDir{
-				Path: path + "/" + e.Name(),
-				Type: File,
+			filePath := path + "/" + e.Name()
+			fileContent, err := d.loader.File(filePath)
+			if err != nil {
+				return nil, err
+			}
+			node := node.New(filesystem.Entity{
+				Path:        filePath,
+				Type:        filesystem.File,
+				ContentType: d.classifier.Classify(string(fileContent)),
 			})
 			root.AddNext(node)
 		}
 
 	}
 
-	return root
+	return root, nil
 }
 
-func (d *discover) findDir(path string, fileDirType Type) *node.Node[FileDir] {
-	root := node.New(FileDir{
+func (d *discover) findDir(path string, fileDirType filesystem.Type) (*node.Node[filesystem.Entity], error) {
+	root := node.New(filesystem.Entity{
 		Path: path,
 		Type: fileDirType,
 	})
@@ -68,23 +81,32 @@ func (d *discover) findDir(path string, fileDirType Type) *node.Node[FileDir] {
 	}
 
 	for _, e := range entries {
-		innerFileDirType := File
+		innerFileDirType := filesystem.File
 		if e.IsDir() {
-			innerFileDirType = Dir
+			innerFileDirType = filesystem.Dir
 		}
 
-		if innerFileDirType == Dir {
-			inner := d.findDir(path+"/"+e.Name(), innerFileDirType)
+		if innerFileDirType == filesystem.Dir {
+			inner, err := d.findDir(path+"/"+e.Name(), innerFileDirType)
+			if err != nil {
+				return nil, err
+			}
 			root.AddNext(inner)
 		} else {
-			node := node.New(FileDir{
-				Path: path + "/" + e.Name(),
-				Type: File,
+			filePath := path + "/" + e.Name()
+			fileContent, err := d.loader.File(filePath)
+			if err != nil {
+				return nil, err
+			}
+			node := node.New(filesystem.Entity{
+				Path:        filePath,
+				Type:        filesystem.File,
+				ContentType: d.classifier.Classify(string(fileContent)),
 			})
 			root.AddNext(node)
 		}
 
 	}
 
-	return root
+	return root, nil
 }
