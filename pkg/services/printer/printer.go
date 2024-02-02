@@ -1,7 +1,7 @@
 package printer
 
 import (
-	"github.com/johnfercher/go-pkg-struct/pkg/consts/filesystem"
+	"github.com/johnfercher/go-pkg-struct/pkg/domain/filesystem"
 	"github.com/johnfercher/go-tree/node"
 )
 
