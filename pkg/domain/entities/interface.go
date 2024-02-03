@@ -8,7 +8,7 @@ type Interface struct {
 	Package string
 	Name    string
 	Path    string
-	Imports []string
+	Imports []*Import
 	Methods []string
 }
 
@@ -21,7 +21,7 @@ func (i *Interface) String() string {
 
 	content += fmt.Sprintf("IMPORTS: %s\n", i.Path)
 	for _, imp := range i.Imports {
-		content += imp + "\n"
+		content += imp.String() + "\n"
 	}
 
 	content += fmt.Sprintf("METHODS: %s\n", i.Path)

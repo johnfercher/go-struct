@@ -65,29 +65,41 @@ func (i *interfaceInterpreter) ExtractInterfaceMethods(content string) []string 
 	return methods
 }
 
-func (i *interfaceInterpreter) ExtractImports(content string) []string {
+func (i *interfaceInterpreter) ExtractImports(content string) []*entities.Import {
 	lines := strings.Split(content, "\n")
 
-	var imports []string
-	for i := 0; i < len(lines); i++ {
-		match := regex.ImportWord.FindString(lines[i])
+	var imports []*entities.Import
+	for index := 0; index < len(lines); index++ {
+		match := regex.ImportWord.FindString(lines[index])
 		if match == "import " {
-			return []string{strings.ReplaceAll(lines[i], "import ", "")}
+			importString := strings.ReplaceAll(lines[index], "import ", "")
+			return []*entities.Import{
+				&entities.Import{
+					Path:    importString,
+					Package: i.getLastWord(importString),
+				},
+			}
 		}
 		if match == "import (" {
-			i++
-			for j := i; j < len(lines); j++ {
+			index++
+			for j := index; j < len(lines); j++ {
 				if lines[j] == ")" {
 					break
 				}
-				imports = append(imports, lines[j])
+				line := strings.ReplaceAll(lines[j], "\t", "")
+				imports = append(imports, &entities.Import{
+					Path:    line,
+					Package: i.getLastWord(line),
+				})
 			}
 		}
 	}
 
-	for i := 0; i < len(imports); i++ {
-		imports[i] = strings.ReplaceAll(imports[i], "\t", "")
-	}
-
 	return imports
+}
+
+func (i *interfaceInterpreter) getLastWord(line string) string {
+	line = strings.ReplaceAll(line, "\"", "")
+	words := strings.Split(line, "/")
+	return words[len(words)-1]
 }
