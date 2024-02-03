@@ -5,7 +5,7 @@ import (
 	"github.com/johnfercher/go-pkg-struct/pkg/domain/consts/content"
 	"github.com/johnfercher/go-pkg-struct/pkg/domain/consts/file"
 	"github.com/johnfercher/go-pkg-struct/pkg/domain/filesystem"
-	"github.com/johnfercher/go-pkg-struct/pkg/services/classifiers"
+	"github.com/johnfercher/go-pkg-struct/pkg/services"
 	"github.com/johnfercher/go-pkg-struct/pkg/services/loader"
 	"github.com/johnfercher/go-tree/node"
 	"log"
@@ -20,10 +20,10 @@ type Discover interface {
 
 type discover struct {
 	loader         loader.Loader
-	fileClassifier classifiers.FileClassifier
+	fileClassifier services.FileClassifier
 }
 
-func New(loader loader.Loader, fileClassifier classifiers.FileClassifier) Discover {
+func New(loader loader.Loader, fileClassifier services.FileClassifier) Discover {
 	return &discover{
 		loader:         loader,
 		fileClassifier: fileClassifier,

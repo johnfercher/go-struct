@@ -1,7 +1,7 @@
-package classifiers_test
+package services_test
 
 import (
-	"github.com/johnfercher/go-pkg-struct/pkg/services/classifiers"
+	"github.com/johnfercher/go-pkg-struct/pkg/services"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -9,7 +9,7 @@ import (
 func TestClassifier_IsGoFile(t *testing.T) {
 	t.Run("when file has header with package + string, should return is go file", func(t *testing.T) {
 		// Arrange
-		sut := classifiers.New()
+		sut := services.New()
 
 		// Act
 		isGo := sut.IsGoFile("package classifiers")
@@ -19,7 +19,7 @@ func TestClassifier_IsGoFile(t *testing.T) {
 	})
 	t.Run("when file hasn´t header with package + string, should return is not go file", func(t *testing.T) {
 		// Arrange
-		sut := classifiers.New()
+		sut := services.New()
 
 		// Act
 		isGo := sut.IsGoFile("module github.com/johnfercher/go-pkg-struct")

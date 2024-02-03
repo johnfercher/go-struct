@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/johnfercher/go-pkg-struct/pkg/services/classifiers"
+	"github.com/johnfercher/go-pkg-struct/pkg/services"
 	"github.com/johnfercher/go-pkg-struct/pkg/services/discover"
 	"github.com/johnfercher/go-pkg-struct/pkg/services/loader"
 	"github.com/johnfercher/go-pkg-struct/pkg/services/printer"
@@ -13,7 +13,7 @@ import (
 func main() {
 	packagePath := "docs/api"
 	loader := loader.New()
-	classifier := classifiers.New()
+	classifier := services.New()
 	discover := discover.New(loader, classifier)
 
 	workdir, err := os.Getwd()
