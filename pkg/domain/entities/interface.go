@@ -9,7 +9,7 @@ type Interface struct {
 	Name    string
 	Path    string
 	Imports []*Import
-	Methods []string
+	Methods []*Function
 }
 
 func (i *Interface) String() string {
@@ -26,7 +26,7 @@ func (i *Interface) String() string {
 
 	content += fmt.Sprintf("METHODS: %s\n", i.Path)
 	for _, method := range i.Methods {
-		content += method + "\n"
+		content += method.String() + "\n"
 	}
 
 	return content

@@ -54,12 +54,43 @@ func (i *interfaceInterpreter) ExtractPackageName(content string) string {
 	return strings.ReplaceAll(name, "package ", "")
 }
 
-func (i *interfaceInterpreter) ExtractInterfaceMethods(content string) []string {
+func (i *interfaceInterpreter) ExtractInterfaceMethods(content string) []*entities.Function {
 	lines := strings.Split(content, "\n")
-	methods := lines[1 : len(lines)-1]
+	methodsString := lines[1 : len(lines)-1]
 
-	for i := 0; i < len(methods); i++ {
-		methods[i] = strings.ReplaceAll(methods[i], "\t", "")
+	var methods []*entities.Function
+	for i := 0; i < len(methodsString); i++ {
+		methodString := strings.ReplaceAll(methodsString[i], "\t", "")
+		methodName := regex.InterfaceMethodName.FindString(methodString)
+		methodName = strings.ReplaceAll(methodName, "(", "")
+		argIn := regex.InArg.FindString(methodString)
+		argIn = strings.ReplaceAll(argIn, "(", "")
+		argIn = strings.ReplaceAll(argIn, ") ", "")
+		argOut := regex.OutArg.FindString(methodString)
+		argOut = strings.ReplaceAll(argOut, "( ", "")
+		argOut = strings.ReplaceAll(argOut, ") ", "")
+
+		argsInString := strings.Split(argIn, ",")
+		var argsIn []*entities.Arg
+		for _, argInString := range argsInString {
+			argsIn = append(argsIn, &entities.Arg{
+				Content: argInString,
+			})
+		}
+
+		argsOutString := strings.Split(argOut, ",")
+		var argsOut []*entities.Arg
+		for _, argOutString := range argsOutString {
+			argsOut = append(argsOut, &entities.Arg{
+				Content: argOutString,
+			})
+		}
+
+		methods = append(methods, &entities.Function{
+			Name: methodName,
+			In:   argsIn,
+			Out:  argsOut,
+		})
 	}
 
 	return methods
@@ -74,7 +105,7 @@ func (i *interfaceInterpreter) ExtractImports(content string) []*entities.Import
 		if match == "import " {
 			importString := strings.ReplaceAll(lines[index], "import ", "")
 			return []*entities.Import{
-				&entities.Import{
+				{
 					Path:    importString,
 					Package: i.getLastWord(importString),
 				},
