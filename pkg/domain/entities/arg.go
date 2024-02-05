@@ -4,9 +4,13 @@ import "fmt"
 
 type Arg struct {
 	Content string
-	Import  []Import
+	Imports []*Import
 }
 
 func (a *Arg) String() string {
-	return fmt.Sprintf("%s", a.Content)
+	var imports string
+	for _, imp := range a.Imports {
+		imports += imp.String() + " "
+	}
+	return fmt.Sprintf("%s --%s--", a.Content, a.Imports)
 }

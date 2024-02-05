@@ -31,7 +31,7 @@ func (i *interfaceInterpreter) ParseAll(content string) []*entities.Interface {
 			Package: packageName,
 			Name:    i.ExtractInterfaceName(interfaceContent),
 			Imports: imports,
-			Methods: i.ExtractInterfaceMethods(interfaceContent),
+			Methods: i.ExtractInterfaceMethods(interfaceContent, imports),
 		})
 	}
 
@@ -54,13 +54,13 @@ func (i *interfaceInterpreter) ExtractPackageName(content string) string {
 	return strings.ReplaceAll(name, "package ", "")
 }
 
-func (i *interfaceInterpreter) ExtractInterfaceMethods(content string) []*entities.Function {
+func (i *interfaceInterpreter) ExtractInterfaceMethods(content string, imports []*entities.Import) []*entities.Function {
 	lines := strings.Split(content, "\n")
 	methodsString := lines[1 : len(lines)-1]
 
 	var methods []*entities.Function
-	for i := 0; i < len(methodsString); i++ {
-		methodString := strings.ReplaceAll(methodsString[i], "\t", "")
+	for index := 0; index < len(methodsString); index++ {
+		methodString := strings.ReplaceAll(methodsString[index], "\t", "")
 		methodName := regex.InterfaceMethodName.FindString(methodString)
 		methodName = strings.ReplaceAll(methodName, "(", "")
 		argIn := regex.InArg.FindString(methodString)
@@ -75,6 +75,7 @@ func (i *interfaceInterpreter) ExtractInterfaceMethods(content string) []*entiti
 		for _, argInString := range argsInString {
 			argsIn = append(argsIn, &entities.Arg{
 				Content: argInString,
+				Imports: i.getImportsMatched(argInString, imports),
 			})
 		}
 
@@ -83,6 +84,7 @@ func (i *interfaceInterpreter) ExtractInterfaceMethods(content string) []*entiti
 		for _, argOutString := range argsOutString {
 			argsOut = append(argsOut, &entities.Arg{
 				Content: argOutString,
+				Imports: i.getImportsMatched(argOutString, imports),
 			})
 		}
 
@@ -133,4 +135,14 @@ func (i *interfaceInterpreter) getLastWord(line string) string {
 	line = strings.ReplaceAll(line, "\"", "")
 	words := strings.Split(line, "/")
 	return words[len(words)-1]
+}
+
+func (i *interfaceInterpreter) getImportsMatched(argString string, imports []*entities.Import) []*entities.Import {
+	var usedImports []*entities.Import
+	for _, imp := range imports {
+		if imp.IsUsedIn(argString) {
+			usedImports = append(usedImports, imp)
+		}
+	}
+	return usedImports
 }

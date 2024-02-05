@@ -17,7 +17,7 @@ func (f *Function) String() string {
 func (f *Function) getInString() string {
 	var args string
 	for _, arg := range f.In {
-		args += arg.Content + " "
+		args += arg.String() + " "
 	}
 
 	return args
@@ -26,7 +26,7 @@ func (f *Function) getInString() string {
 func (f *Function) getOutString() string {
 	var args string
 	for _, arg := range f.Out {
-		args += arg.Content + " "
+		args += arg.String() + " "
 	}
 
 	return args
