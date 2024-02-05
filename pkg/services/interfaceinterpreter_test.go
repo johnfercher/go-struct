@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestInterfaceInterpreter_Parse(t *testing.T) {
+func TestInterfaceInterpreter_ParseAll(t *testing.T) {
 	// Arrange
 	sut := NewInterfaceInterpreter()
 

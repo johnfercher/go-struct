@@ -7,7 +7,7 @@ import (
 )
 
 type InterfaceInterpreter interface {
-	ParseAll(file string) []*entities.Interface
+	ParseAll(content string) []*entities.Interface
 }
 
 type interfaceInterpreter struct {
@@ -18,8 +18,8 @@ func NewInterfaceInterpreter() InterfaceInterpreter {
 }
 
 func (i *interfaceInterpreter) ParseAll(content string) []*entities.Interface {
-	packageName := i.ExtractPackageName(content)
-	imports := i.ExtractImports(content)
+	packageName := regex.ExtractPackageName(content)
+	imports := regex.ExtractImports(content)
 	interfaceContents := i.ExtractInterfaces(content)
 	if len(interfaceContents) == 0 {
 		return nil
@@ -47,11 +47,6 @@ func (i *interfaceInterpreter) ExtractInterfaceName(content string) string {
 	name := regex.GoInterfaceName.FindString(content)
 	name = strings.ReplaceAll(name, "type ", "")
 	return strings.ReplaceAll(name, " interface", "")
-}
-
-func (i *interfaceInterpreter) ExtractPackageName(content string) string {
-	name := regex.GoPackageName.FindString(content)
-	return strings.ReplaceAll(name, "package ", "")
 }
 
 func (i *interfaceInterpreter) ExtractInterfaceMethods(content string, imports []*entities.Import) []*entities.Function {
@@ -96,45 +91,6 @@ func (i *interfaceInterpreter) ExtractInterfaceMethods(content string, imports [
 	}
 
 	return methods
-}
-
-func (i *interfaceInterpreter) ExtractImports(content string) []*entities.Import {
-	lines := strings.Split(content, "\n")
-
-	var imports []*entities.Import
-	for index := 0; index < len(lines); index++ {
-		match := regex.ImportWord.FindString(lines[index])
-		if match == "import " {
-			importString := strings.ReplaceAll(lines[index], "import ", "")
-			return []*entities.Import{
-				{
-					Path:    importString,
-					Package: i.getLastWord(importString),
-				},
-			}
-		}
-		if match == "import (" {
-			index++
-			for j := index; j < len(lines); j++ {
-				if lines[j] == ")" {
-					break
-				}
-				line := strings.ReplaceAll(lines[j], "\t", "")
-				imports = append(imports, &entities.Import{
-					Path:    line,
-					Package: i.getLastWord(line),
-				})
-			}
-		}
-	}
-
-	return imports
-}
-
-func (i *interfaceInterpreter) getLastWord(line string) string {
-	line = strings.ReplaceAll(line, "\"", "")
-	words := strings.Split(line, "/")
-	return words[len(words)-1]
 }
 
 func (i *interfaceInterpreter) getImportsMatched(argString string, imports []*entities.Import) []*entities.Import {
