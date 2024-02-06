@@ -5,7 +5,6 @@ import (
 	"github.com/johnfercher/go-pkg-struct/pkg/services"
 	"github.com/johnfercher/go-pkg-struct/pkg/services/discover"
 	"github.com/johnfercher/go-pkg-struct/pkg/services/loader"
-	"github.com/johnfercher/go-pkg-struct/pkg/services/printer"
 	"log"
 	"os"
 )
@@ -15,6 +14,8 @@ func main() {
 	loader := loader.New()
 	classifier := services.New()
 	discover := discover.New(loader, classifier)
+	interfaceInterpreter := services.NewInterfaceInterpreter()
+	structInterpreter := services.NewStructInterpreter()
 
 	workdir, err := os.Getwd()
 	if err != nil {
@@ -24,10 +25,22 @@ func main() {
 	path := workdir + "/" + packagePath
 	fmt.Println(path)
 
-	node, err := discover.Project(path)
+	entities, err := discover.Project(path)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	printer.Print(node)
+	for key, entity := range entities {
+		content, _ := loader.File(key)
+		interfaces := interfaceInterpreter.ParseAll(string(content), key)
+		structs := structInterpreter.ParseAll(string(content), key)
+		newEntity := entity
+		newEntity.Interfaces = interfaces
+		newEntity.Structs = structs
+		entities[key] = newEntity
+	}
+
+	for _, entity := range entities {
+		entity.Print("")
+	}
 }

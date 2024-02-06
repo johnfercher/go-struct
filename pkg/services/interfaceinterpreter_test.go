@@ -12,7 +12,7 @@ func TestInterfaceInterpreter_ParseAll(t *testing.T) {
 	sut := NewInterfaceInterpreter()
 
 	// Act
-	interfaces := sut.ParseAll(samples.InterfaceFile)
+	interfaces := sut.ParseAll(samples.InterfaceFile, "path")
 
 	for _, interf := range interfaces {
 		fmt.Println(interf.String())

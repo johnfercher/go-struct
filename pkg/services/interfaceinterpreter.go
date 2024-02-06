@@ -7,7 +7,7 @@ import (
 )
 
 type InterfaceInterpreter interface {
-	ParseAll(content string) []*entities.Interface
+	ParseAll(content string, path string) []*entities.Interface
 }
 
 type interfaceInterpreter struct {
@@ -17,7 +17,7 @@ func NewInterfaceInterpreter() InterfaceInterpreter {
 	return &interfaceInterpreter{}
 }
 
-func (i *interfaceInterpreter) ParseAll(content string) []*entities.Interface {
+func (i *interfaceInterpreter) ParseAll(content string, path string) []*entities.Interface {
 	packageName := regex.ExtractPackageName(content)
 	imports := regex.ExtractImports(content)
 	interfaceContents := i.ExtractInterfaces(content)
@@ -30,6 +30,7 @@ func (i *interfaceInterpreter) ParseAll(content string) []*entities.Interface {
 		interfaces = append(interfaces, &entities.Interface{
 			Package: packageName,
 			Name:    i.ExtractInterfaceName(interfaceContent),
+			Path:    path,
 			Imports: imports,
 			Methods: i.ExtractInterfaceMethods(interfaceContent, imports),
 		})

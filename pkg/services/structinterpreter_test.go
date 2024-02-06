@@ -13,7 +13,7 @@ func TestStructInterpreter_ParseAll(t *testing.T) {
 	sut := services.NewStructInterpreter()
 
 	// Act
-	structs := sut.ParseAll(samples.StructFile)
+	structs := sut.ParseAll(samples.StructFile, "path")
 
 	for _, struc := range structs {
 		fmt.Println(struc.String())

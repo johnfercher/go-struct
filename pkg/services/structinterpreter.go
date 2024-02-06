@@ -7,17 +7,17 @@ import (
 )
 
 type StructInterpreter interface {
-	ParseAll(content string) []*entities.Struct
+	ParseAll(content string, path string) []*entities.Struct
 }
 
 type structInterpreter struct {
 }
 
-func NewStructInterpreter() *structInterpreter {
+func NewStructInterpreter() StructInterpreter {
 	return &structInterpreter{}
 }
 
-func (s *structInterpreter) ParseAll(content string) []*entities.Struct {
+func (s *structInterpreter) ParseAll(content string, path string) []*entities.Struct {
 	packageName := regex.ExtractPackageName(content)
 	imports := regex.ExtractImports(content)
 	structContents := s.ExtractStructs(content)
@@ -32,9 +32,10 @@ func (s *structInterpreter) ParseAll(content string) []*entities.Struct {
 		structs = append(structs, &entities.Struct{
 			Package: packageName,
 			Name:    structName,
+			Path:    path,
 			Imports: imports,
 			Fields:  s.ExtractFields(structContent, imports),
-			Methods: s.ExtractMethods(content, packageName, structName),
+			Methods: s.ExtractMethods(content, packageName, structName, imports),
 		})
 	}
 
@@ -66,7 +67,7 @@ func (s *structInterpreter) ExtractFields(content string, imports []*entities.Im
 	return fields
 }
 
-func (s *structInterpreter) ExtractMethods(content string, pkg string, structName string) []*entities.Function {
+func (s *structInterpreter) ExtractMethods(content string, pkg string, structName string, imports []*entities.Import) []*entities.Function {
 	methods := regex.GoStructMethods.FindAllString(content, -1)
 
 	var functions []*entities.Function
@@ -82,10 +83,30 @@ func (s *structInterpreter) ExtractMethods(content string, pkg string, structNam
 		argOut = strings.ReplaceAll(argOut, "( ", "")
 		argOut = strings.ReplaceAll(argOut, ") ", "")
 
+		argsInString := strings.Split(argIn, ",")
+		var argsIn []*entities.Field
+		for _, argInString := range argsInString {
+			argsIn = append(argsIn, &entities.Field{
+				Content: argInString,
+				Imports: s.getImportsMatched(argInString, imports),
+			})
+		}
+
+		argsOutString := strings.Split(argOut, ",")
+		var argsOut []*entities.Field
+		for _, argOutString := range argsOutString {
+			argsOut = append(argsOut, &entities.Field{
+				Content: argOutString,
+				Imports: s.getImportsMatched(argOutString, imports),
+			})
+		}
+
 		functions = append(functions, &entities.Function{
 			Package: pkg,
 			Name:    methodName,
 			Struct:  structName,
+			In:      argsIn,
+			Out:     argsOut,
 		})
 	}
 
