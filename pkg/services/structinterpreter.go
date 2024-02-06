@@ -28,11 +28,13 @@ func (s *structInterpreter) ParseAll(content string) []*entities.Struct {
 
 	var structs []*entities.Struct
 	for _, structContent := range structContents {
+		structName := s.ExtractStructName(structContent)
 		structs = append(structs, &entities.Struct{
 			Package: packageName,
-			Name:    s.ExtractStructName(structContent),
+			Name:    structName,
 			Imports: imports,
 			Fields:  s.ExtractFields(structContent, imports),
+			Methods: s.ExtractMethods(content, packageName, structName),
 		})
 	}
 
@@ -62,6 +64,32 @@ func (s *structInterpreter) ExtractFields(content string, imports []*entities.Im
 	}
 
 	return fields
+}
+
+func (s *structInterpreter) ExtractMethods(content string, pkg string, structName string) []*entities.Function {
+	methods := regex.GoStructMethods.FindAllString(content, -1)
+
+	var functions []*entities.Function
+	for i := 0; i < len(methods); i++ {
+		methods[i] = regex.GoStructMethodsReceiver.ReplaceAllLiteralString(methods[i], "")
+
+		methodName := regex.InterfaceMethodName.FindString(methods[i])
+		methodName = strings.ReplaceAll(methodName, "(", "")
+		argIn := regex.InArg.FindString(methods[i])
+		argIn = strings.ReplaceAll(argIn, "(", "")
+		argIn = strings.ReplaceAll(argIn, ") ", "")
+		argOut := regex.OutArg.FindString(methods[i])
+		argOut = strings.ReplaceAll(argOut, "( ", "")
+		argOut = strings.ReplaceAll(argOut, ") ", "")
+
+		functions = append(functions, &entities.Function{
+			Package: pkg,
+			Name:    methodName,
+			Struct:  structName,
+		})
+	}
+
+	return functions
 }
 
 func (s *structInterpreter) getImportsMatched(argString string, imports []*entities.Import) []*entities.Import {

@@ -29,10 +29,10 @@ func (s *Struct) String() string {
 		content += field.String() + "\n"
 	}
 
-	/*content += fmt.Sprintf("METHODS: %s\n", i.Path)
+	content += fmt.Sprintf("METHODS: %s\n", s.Path)
 	for _, method := range s.Methods {
 		content += method.String() + "\n"
-	}*/
+	}
 
 	return content
 }
