@@ -9,6 +9,7 @@ type Struct struct {
 	Imports    []*Import
 	Methods    []*Function
 	Interfaces []*Interface
+	Fields     []*Field
 }
 
 func (s *Struct) String() string {

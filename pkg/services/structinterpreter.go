@@ -31,7 +31,7 @@ func (s *structInterpreter) ParseAll(content string) []*entities.Struct {
 			Package: packageName,
 			Name:    s.ExtractStructName(structContent),
 			Imports: imports,
-			//Methods: i.ExtractInterfaceMethods(interfaceContent, imports),
+			Fields:  s.ExtractFields(content),
 		})
 	}
 
@@ -46,4 +46,8 @@ func (s *structInterpreter) ExtractStructName(content string) string {
 	name := regex.GoStructName.FindString(content)
 	name = strings.ReplaceAll(name, "type ", "")
 	return strings.ReplaceAll(name, " struct", "")
+}
+
+func (s *structInterpreter) ExtractFields(content string) []*entities.Field {
+	return nil
 }

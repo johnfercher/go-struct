@@ -2,12 +2,12 @@ package entities
 
 import "fmt"
 
-type Arg struct {
+type Field struct {
 	Content string
 	Imports []*Import
 }
 
-func (a *Arg) String() string {
+func (a *Field) String() string {
 	var imports string
 	for _, imp := range a.Imports {
 		imports += imp.String() + " "

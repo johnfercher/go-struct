@@ -66,18 +66,18 @@ func (i *interfaceInterpreter) ExtractInterfaceMethods(content string, imports [
 		argOut = strings.ReplaceAll(argOut, ") ", "")
 
 		argsInString := strings.Split(argIn, ",")
-		var argsIn []*entities.Arg
+		var argsIn []*entities.Field
 		for _, argInString := range argsInString {
-			argsIn = append(argsIn, &entities.Arg{
+			argsIn = append(argsIn, &entities.Field{
 				Content: argInString,
 				Imports: i.getImportsMatched(argInString, imports),
 			})
 		}
 
 		argsOutString := strings.Split(argOut, ",")
-		var argsOut []*entities.Arg
+		var argsOut []*entities.Field
 		for _, argOutString := range argsOutString {
-			argsOut = append(argsOut, &entities.Arg{
+			argsOut = append(argsOut, &entities.Field{
 				Content: argOutString,
 				Imports: i.getImportsMatched(argOutString, imports),
 			})
