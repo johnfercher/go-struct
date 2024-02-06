@@ -1,4 +1,4 @@
-package services
+package discover
 
 import (
 	"errors"
@@ -13,7 +13,7 @@ type FileClassifier interface {
 
 type fileClassifier struct{}
 
-func New() *fileClassifier {
+func NewFileClassifier() *fileClassifier {
 	return &fileClassifier{}
 }
 

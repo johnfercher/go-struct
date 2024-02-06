@@ -3,7 +3,6 @@ package discover
 import (
 	"github.com/johnfercher/go-pkg-struct/pkg/domain/consts/file"
 	"github.com/johnfercher/go-pkg-struct/pkg/domain/filesystem"
-	"github.com/johnfercher/go-pkg-struct/pkg/services"
 	"github.com/johnfercher/go-pkg-struct/pkg/services/loader"
 	"log"
 	"os"
@@ -17,11 +16,11 @@ type Discover interface {
 
 type discover struct {
 	loader         loader.Loader
-	fileClassifier services.FileClassifier
+	fileClassifier FileClassifier
 	entities       map[string]filesystem.Entity
 }
 
-func New(loader loader.Loader, fileClassifier services.FileClassifier) Discover {
+func New(loader loader.Loader, fileClassifier FileClassifier) Discover {
 	return &discover{
 		loader:         loader,
 		fileClassifier: fileClassifier,

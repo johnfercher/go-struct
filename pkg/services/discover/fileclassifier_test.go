@@ -1,4 +1,4 @@
-package services_test
+package discover_test
 
 import (
 	"github.com/johnfercher/go-pkg-struct/pkg/services"
