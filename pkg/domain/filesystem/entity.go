@@ -2,9 +2,9 @@ package filesystem
 
 import (
 	"fmt"
-	"github.com/johnfercher/go-pkg-struct/pkg/domain/consts/content"
-	"github.com/johnfercher/go-pkg-struct/pkg/domain/consts/file"
-	"github.com/johnfercher/go-pkg-struct/pkg/domain/entities"
+	"github.com/johnfercher/go-struct/pkg/domain/consts/content"
+	"github.com/johnfercher/go-struct/pkg/domain/consts/file"
+	"github.com/johnfercher/go-struct/pkg/domain/entities"
 )
 
 type Entity struct {

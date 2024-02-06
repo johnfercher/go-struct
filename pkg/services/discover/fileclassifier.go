@@ -2,8 +2,8 @@ package discover
 
 import (
 	"errors"
-	"github.com/johnfercher/go-pkg-struct/pkg/domain/consts/content"
-	"github.com/johnfercher/go-pkg-struct/pkg/services/regex"
+	"github.com/johnfercher/go-struct/pkg/domain/consts/content"
+	"github.com/johnfercher/go-struct/pkg/services/regex"
 	"strings"
 )
 

@@ -1,4 +1,4 @@
-module github.com/johnfercher/go-pkg-struct
+module github.com/johnfercher/go-struct
 
 go 1.21.6
 

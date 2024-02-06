@@ -1,9 +1,9 @@
 package discover
 
 import (
-	"github.com/johnfercher/go-pkg-struct/pkg/domain/consts/file"
-	"github.com/johnfercher/go-pkg-struct/pkg/domain/filesystem"
-	"github.com/johnfercher/go-pkg-struct/pkg/services/loader"
+	"github.com/johnfercher/go-struct/pkg/domain/consts/file"
+	"github.com/johnfercher/go-struct/pkg/domain/filesystem"
+	"github.com/johnfercher/go-struct/pkg/services/loader"
 	"log"
 	"os"
 )

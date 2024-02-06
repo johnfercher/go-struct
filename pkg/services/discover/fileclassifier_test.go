@@ -1,7 +1,7 @@
 package discover_test
 
 import (
-	"github.com/johnfercher/go-pkg-struct/pkg/services"
+	"github.com/johnfercher/go-struct/pkg/services"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -22,7 +22,7 @@ func TestClassifier_IsGoFile(t *testing.T) {
 		sut := services.New()
 
 		// Act
-		isGo := sut.IsGoFile("module github.com/johnfercher/go-pkg-struct")
+		isGo := sut.IsGoFile("module github.com/johnfercher/go-struct")
 
 		// Assert
 		assert.False(t, isGo)

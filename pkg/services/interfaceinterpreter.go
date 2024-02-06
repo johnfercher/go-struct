@@ -1,8 +1,8 @@
 package services
 
 import (
-	"github.com/johnfercher/go-pkg-struct/pkg/domain/entities"
-	"github.com/johnfercher/go-pkg-struct/pkg/services/regex"
+	"github.com/johnfercher/go-struct/pkg/domain/entities"
+	"github.com/johnfercher/go-struct/pkg/services/regex"
 	"strings"
 )
 

@@ -2,9 +2,9 @@ package services
 
 import (
 	"fmt"
-	"github.com/johnfercher/go-pkg-struct/pkg/domain/filesystem"
-	"github.com/johnfercher/go-pkg-struct/pkg/services/discover"
-	"github.com/johnfercher/go-pkg-struct/pkg/services/loader"
+	"github.com/johnfercher/go-struct/pkg/domain/filesystem"
+	"github.com/johnfercher/go-struct/pkg/services/discover"
+	"github.com/johnfercher/go-struct/pkg/services/loader"
 	"log"
 	"os"
 )

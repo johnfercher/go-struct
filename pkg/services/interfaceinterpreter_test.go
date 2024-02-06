@@ -2,7 +2,7 @@ package services
 
 import (
 	"fmt"
-	"github.com/johnfercher/go-pkg-struct/internal/samples"
+	"github.com/johnfercher/go-struct/internal/samples"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

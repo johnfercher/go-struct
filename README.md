@@ -1,2 +1,2 @@
-# go-pkg-struct
+# go-struct
 

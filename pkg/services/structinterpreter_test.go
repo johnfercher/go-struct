@@ -2,8 +2,8 @@ package services_test
 
 import (
 	"fmt"
-	"github.com/johnfercher/go-pkg-struct/internal/samples"
-	"github.com/johnfercher/go-pkg-struct/pkg/services"
+	"github.com/johnfercher/go-struct/internal/samples"
+	"github.com/johnfercher/go-struct/pkg/services"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

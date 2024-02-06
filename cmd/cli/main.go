@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/johnfercher/go-pkg-struct/pkg/services"
+	"github.com/johnfercher/go-struct/pkg/services"
 	"log"
 )
 
