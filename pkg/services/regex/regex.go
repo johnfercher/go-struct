@@ -7,12 +7,16 @@ import (
 )
 
 var GoPackageName = regexp.MustCompile(`package \w+`)
+var ImportWord = regexp.MustCompile(`import\s?\(?`)
+
 var GoStructName = regexp.MustCompile(`type \w+ struct`)
+var GoStruct = regexp.MustCompile(`type\s+\w+\s+struct\s*{[^}]*}`)
+var GoStructFields = regexp.MustCompile(`\s+?\w+\s+(\[\])?\*?\w+(\.\w+)?`)
+
 var GoInterfaceName = regexp.MustCompile(`type \w+ interface`)
 var GoInterface = regexp.MustCompile(`type\s+\w+\s+interface\s*{[^}]*}`)
-var GoStruct = regexp.MustCompile(`type\s+\w+\s+struct\s*{[^}]*}`)
-var ImportWord = regexp.MustCompile(`import\s?\(?`)
 var InterfaceMethodName = regexp.MustCompile(`\w+\(`)
+
 var InArg = regexp.MustCompile(`\(.+\) `)
 var OutArg = regexp.MustCompile(`\) (\(.+\)|\w+)`)
 

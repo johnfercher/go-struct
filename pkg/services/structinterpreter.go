@@ -21,6 +21,7 @@ func (s *structInterpreter) ParseAll(content string) []*entities.Struct {
 	packageName := regex.ExtractPackageName(content)
 	imports := regex.ExtractImports(content)
 	structContents := s.ExtractStructs(content)
+
 	if len(structContents) == 0 {
 		return nil
 	}
@@ -31,7 +32,7 @@ func (s *structInterpreter) ParseAll(content string) []*entities.Struct {
 			Package: packageName,
 			Name:    s.ExtractStructName(structContent),
 			Imports: imports,
-			Fields:  s.ExtractFields(content),
+			Fields:  s.ExtractFields(structContent, imports),
 		})
 	}
 
@@ -48,6 +49,27 @@ func (s *structInterpreter) ExtractStructName(content string) string {
 	return strings.ReplaceAll(name, " struct", "")
 }
 
-func (s *structInterpreter) ExtractFields(content string) []*entities.Field {
-	return nil
+func (s *structInterpreter) ExtractFields(content string, imports []*entities.Import) []*entities.Field {
+	lines := strings.Split(content, "\n")
+	lines = lines[1 : len(lines)-1]
+
+	var fields []*entities.Field
+	for _, line := range lines {
+		fields = append(fields, &entities.Field{
+			Content: strings.ReplaceAll(line, "\t", ""),
+			Imports: s.getImportsMatched(line, imports),
+		})
+	}
+
+	return fields
+}
+
+func (s *structInterpreter) getImportsMatched(argString string, imports []*entities.Import) []*entities.Import {
+	var usedImports []*entities.Import
+	for _, imp := range imports {
+		if imp.IsUsedIn(argString) {
+			usedImports = append(usedImports, imp)
+		}
+	}
+	return usedImports
 }

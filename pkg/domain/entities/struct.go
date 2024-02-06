@@ -24,6 +24,11 @@ func (s *Struct) String() string {
 		content += imp.String() + "\n"
 	}
 
+	content += fmt.Sprintf("FIELDS: %s\n", s.Path)
+	for _, field := range s.Fields {
+		content += field.String() + "\n"
+	}
+
 	/*content += fmt.Sprintf("METHODS: %s\n", i.Path)
 	for _, method := range s.Methods {
 		content += method.String() + "\n"
