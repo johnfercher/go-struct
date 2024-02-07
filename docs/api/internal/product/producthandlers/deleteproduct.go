@@ -24,7 +24,7 @@ func NewDeleteProduct(service productservices.ProductService) *deleteProduct {
 	}
 }
 
-func (p *deleteProduct) Handle(r *http.Request) (apiresponse.ApiResponse, apierror.ApiError) {
+func (p *deleteProduct) Handle(r *http.Request) (apiresponse.ApiResponse, apierror.ApiError) { // Entrypoint
 	ctx := r.Context()
 
 	id, err := productdecode.DecodeStringIDFromURI(r)

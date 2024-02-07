@@ -73,7 +73,6 @@ func (s *structInterpreter) ExtractMethods(content string, pkg string, structNam
 	var functions []*entities.Function
 	for i := 0; i < len(methods); i++ {
 		methods[i] = regex.GoStructMethodsReceiver.ReplaceAllLiteralString(methods[i], "")
-
 		methodName := regex.InterfaceMethodName.FindString(methods[i])
 		methodName = strings.ReplaceAll(methodName, "(", "")
 		argIn := regex.InArg.FindString(methods[i])
@@ -102,11 +101,12 @@ func (s *structInterpreter) ExtractMethods(content string, pkg string, structNam
 		}
 
 		functions = append(functions, &entities.Function{
-			Package: pkg,
-			Name:    methodName,
-			Struct:  structName,
-			In:      argsIn,
-			Out:     argsOut,
+			Package:      pkg,
+			Name:         methodName,
+			Struct:       structName,
+			In:           argsIn,
+			Out:          argsOut,
+			IsEntrypoint: regex.GoEntrypoint.MatchString(methods[i]),
 		})
 	}
 

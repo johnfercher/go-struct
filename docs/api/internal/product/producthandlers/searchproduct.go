@@ -24,7 +24,7 @@ func NewSearchProducts(service productservices.ProductService) *searchProducts {
 	}
 }
 
-func (p *searchProducts) Handle(r *http.Request) (apiresponse.ApiResponse, apierror.ApiError) {
+func (p *searchProducts) Handle(r *http.Request) (apiresponse.ApiResponse, apierror.ApiError) { // Entrypoint
 	ctx := r.Context()
 
 	productType := productdecode.DecodeTypeQueryString(r)

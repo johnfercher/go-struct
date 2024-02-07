@@ -24,7 +24,7 @@ func NewCreateProduct(service productservices.ProductService) *createProduct {
 	}
 }
 
-func (p *createProduct) Handle(r *http.Request) (apiresponse.ApiResponse, apierror.ApiError) {
+func (p *createProduct) Handle(r *http.Request) (apiresponse.ApiResponse, apierror.ApiError) { // Entrypoint
 	ctx := r.Context()
 
 	productToCreate, err := productdecode.DecodeProductFromBody(r)

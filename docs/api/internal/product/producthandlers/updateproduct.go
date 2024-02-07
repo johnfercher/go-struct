@@ -24,7 +24,7 @@ func NewUpdateProduct(service productservices.ProductService) *updateProduct {
 	}
 }
 
-func (p *updateProduct) Handle(r *http.Request) (apiresponse.ApiResponse, apierror.ApiError) {
+func (p *updateProduct) Handle(r *http.Request) (apiresponse.ApiResponse, apierror.ApiError) { // Entrypoint
 	ctx := r.Context()
 
 	id, err := productdecode.DecodeStringIDFromURI(r)

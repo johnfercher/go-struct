@@ -24,7 +24,7 @@ func NewGetProductByID(service productservices.ProductService) *getProductByID {
 	}
 }
 
-func (p *getProductByID) Handle(r *http.Request) (apiresponse.ApiResponse, apierror.ApiError) {
+func (p *getProductByID) Handle(r *http.Request) (apiresponse.ApiResponse, apierror.ApiError) { // Entrypoint
 	ctx := r.Context()
 
 	id, err := productdecode.DecodeStringIDFromURI(r)

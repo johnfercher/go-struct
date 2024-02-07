@@ -20,7 +20,7 @@ func New(productRepository productrepositories.ProductRepository) *productServic
 	}
 }
 
-func (p *productService) GetByID(ctx context.Context, id string) (*productentities.Product, error) {
+func (p *productService) GetByID(ctx context.Context, id string) (*productentities.Product, error) { // entrypoint
 	return p.productRepository.GetByID(ctx, id)
 }
 

@@ -61,9 +61,5 @@ func (p *projectInterpreter) Load(packagePath string) (map[string]filesystem.Ent
 		entities[key] = newEntity
 	}
 
-	for _, entity := range entities {
-		entity.Print("")
-	}
-
 	return entities, nil
 }
